@@ -25,6 +25,16 @@ fechas_sheet = client.open_by_key(SHEET_ID).worksheet("Fechas")
 fechas_df = pd.DataFrame(fechas_sheet.get_all_records())
 fechas_df = fechas_df[["Modulo", "Fecha"]].dropna().drop_duplicates().set_index("Modulo")
 
+# Diccionario de nombres completos
+nombres_eventos = {
+    "AUTENTICIDAD": "AUTENTICIDAD AL COMUNICAR",
+    "RELEVANCIA": "RELEVANCIA AL COMUNICAR",
+    "CONEXIÓN": "CONEXIÓN AL COMUNICAR",
+    "STORYTELLING": "STORYTELLING WORKSHOP",
+    "C.DIFICILES": "WORKSHOP CONVERSACIONES DIFÍCILES",
+    "C.PRESENTACIONES": "CERTIFICACIÓN PRESENTACIONES EFECTIVAS"
+}
+
 # ---- ENTRADA DE CORREO ----
 correo_input = st.text_input("✉️ Ingresa tu correo electrónico para ver tus inscripciones:")
 
@@ -44,10 +54,11 @@ if st.button("Consultar"):
             fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
             color = "#D4EDDA" if "cupo asignado" in estado.lower() else "#FFF3CD"
             emoji = "✅" if "cupo asignado" in estado.lower() else "⏳"
+            nombre_largo = nombres_eventos.get(evento, evento)
 
             st.markdown(f"""
                 <div style="background-color:{color}; padding:10px 15px; border-radius:8px; margin-bottom:8px; font-size:15px">
-                    <div style="font-weight:bold; margin-bottom:4px;">{emoji} {evento}</div>
+                    <div style="font-weight:bold; margin-bottom:4px;">{emoji} {nombre_largo}</div>
                     <div><strong>Estado:</strong> {estado}</div>
                     <div><strong>Fecha:</strong> {fecha}</div>
                 </div>
