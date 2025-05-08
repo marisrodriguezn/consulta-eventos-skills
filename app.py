@@ -46,9 +46,9 @@ if st.button("Consultar"):
             emoji = "✅" if "cupo asignado" in estado.lower() else "⏳"
 
             st.markdown(f"""
-                <div style="background-color:{color}; padding:15px 20px; border-radius:10px; margin-bottom:10px">
-                    <h4 style="margin-bottom:5px;">{emoji} {evento}</h4>
-                    <p style="margin:0;"><strong>Estado:</strong> {estado}</p>
-                    <p style="margin:0;"><strong>Fecha:</strong> {fecha}</p>
+                <div style="background-color:{color}; padding:10px 15px; border-radius:8px; margin-bottom:8px; font-size:15px">
+                    <div style="font-weight:bold; margin-bottom:4px;">{emoji} {evento}</div>
+                    <div><strong>Estado:</strong> {estado}</div>
+                    <div><strong>Fecha:</strong> {fecha}</div>
                 </div>
             """, unsafe_allow_html=True)
