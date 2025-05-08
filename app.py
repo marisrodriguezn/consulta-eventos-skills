@@ -5,7 +5,7 @@ import json
 from oauth2client.service_account import ServiceAccountCredentials
 
 # ---- TÍTULO ----
-st.title("📋 Consulta tu inscripción a las sesiones del módulo 2 de Skills Academy")
+st.title("📋 Consulta tus eventos para el módulo 2 de Skills Academy")
 
 # ---- CONFIGURACIÓN DE GOOGLE SHEETS ----
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
