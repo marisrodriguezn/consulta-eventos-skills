@@ -36,12 +36,19 @@ if st.button("Consultar"):
         st.warning("❌ Correo no encontrado. Verifica que esté bien escrito.")
     else:
         st.success("✅ Estos son tus eventos:")
+
         eventos = ["AUTENTICIDAD", "RELEVANCIA", "CONEXIÓN", "STORYTELLING", "C.DIFICILES", "C.PRESENTACIONES"]
 
-        resumen = []
         for evento in eventos:
             estado = resultado.iloc[0][evento]
             fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
-            resumen.append({"Evento": evento, "Estado": estado, "Fecha": fecha})
+            color = "#D4EDDA" if "cupo asignado" in estado.lower() else "#FFF3CD"
+            emoji = "✅" if "cupo asignado" in estado.lower() else "⏳"
 
-        st.dataframe(pd.DataFrame(resumen), use_container_width=True)
+            st.markdown(f"""
+                <div style="background-color:{color}; padding:15px 20px; border-radius:10px; margin-bottom:10px">
+                    <h4 style="margin-bottom:5px;">{emoji} {evento}</h4>
+                    <p style="margin:0;"><strong>Estado:</strong> {estado}</p>
+                    <p style="margin:0;"><strong>Fecha:</strong> {fecha}</p>
+                </div>
+            """, unsafe_allow_html=True)
