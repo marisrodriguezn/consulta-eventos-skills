@@ -9,20 +9,21 @@ st.title("📋 Consulta tu inscripción a eventos Skills Academy")
 
 # ---- CONFIGURACIÓN DE GOOGLE SHEETS ----
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-
-# Leer credenciales desde secrets
 creds_dict = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
-# ID de tu archivo Google Sheets (de la URL)
+# ID del archivo Google Sheets
 SHEET_ID = "1LoCEQq-I2qzfzS94ygig15KJ8U66I1g8DTSeuBUZfYA"
-SHEET_NAME = "Hoja 1"
-worksheet = client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
 
-# Cargar datos
-data = worksheet.get_all_records()
-df = pd.DataFrame(data)
+# Cargar hoja de inscripciones
+ins_sheet = client.open_by_key(SHEET_ID).worksheet("Inscripciones")
+df = pd.DataFrame(ins_sheet.get_all_records())
+
+# Cargar hoja de fechas
+fechas_sheet = client.open_by_key(SHEET_ID).worksheet("Fechas")
+fechas_df = pd.DataFrame(fechas_sheet.get_all_records())
+fechas_df = fechas_df[["Modulo", "Fecha"]].dropna().drop_duplicates().set_index("Modulo")
 
 # ---- ENTRADA DE CORREO ----
 correo_input = st.text_input("✉️ Ingresa tu correo electrónico para ver tus inscripciones:")
@@ -36,7 +37,6 @@ if st.button("Consultar"):
     else:
         st.success("✅ Estos son tus eventos:")
         eventos = ["AUTENTICIDAD", "RELEVANCIA", "CONEXIÓN", "STORYTELLING", "C.DIFICILES", "C.PRESENTACIONES"]
-        fechas_df = df[["Modulo", "Fecha"]].dropna().drop_duplicates().set_index("Modulo")
 
         resumen = []
         for evento in eventos:
