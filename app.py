@@ -49,7 +49,7 @@ if st.button("Consultar"):
         tiene_todo = all("cupo asignado" in resultado.iloc[0][evento].lower() for evento in eventos)
 
         if tiene_todo:
-            st.success("⭐ ¡Tienes acceso completo a todas las sesiones! No necesitas preocuparte por confirmar nada más.")
+            st.success("⭐ Como líder del equipo, tienes acceso total a todas las sesiones. ¡Gracias por ser parte clave de esta experiencia!")
             st.markdown("### 🗓️ Agenda de sesiones")
             for evento in eventos:
                 nombre_largo = nombres_eventos.get(evento, evento)
