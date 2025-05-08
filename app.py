@@ -45,15 +45,15 @@ if st.button("Consultar"):
     if resultado.empty:
         st.warning("❌ Correo no encontrado. Verifica que esté bien escrito.")
     else:
-        st.success("✅ Estos son tus eventos:")
+        st.info("🎯 A continuación verás tus eventos, estados y fechas.")
 
         eventos = ["AUTENTICIDAD", "RELEVANCIA", "CONEXIÓN", "STORYTELLING", "C.DIFICILES", "C.PRESENTACIONES"]
 
         for evento in eventos:
             estado = resultado.iloc[0][evento]
             fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
-            color = "#D4EDDA" if "cupo asignado" in estado.lower() else "#FFF3CD"
-            emoji = "✅" if "cupo asignado" in estado.lower() else "⏳"
+            color = "#E6F4EA" if "cupo asignado" in estado.lower() else "#F2F2F2"
+            emoji = "🎟️" if "cupo asignado" in estado.lower() else "🕐"
             nombre_largo = nombres_eventos.get(evento, evento)
 
             st.markdown(f"""
