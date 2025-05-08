@@ -16,7 +16,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
 # ID de tu archivo Google Sheets (de la URL)
-SHEET_ID = "PEGAR_AQUI_ID_DEL_DOCUMENTO"
+SHEET_ID = "1LoCEQq-I2qzfzS94ygig15KJ8U66I1g8DTSeuBUZfYA"
 SHEET_NAME = "Sheet1"
 worksheet = client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
 
