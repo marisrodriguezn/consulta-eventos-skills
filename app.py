@@ -5,7 +5,7 @@ import json
 from oauth2client.service_account import ServiceAccountCredentials
 
 # ---- TÍTULO ----
-st.title("📋 Consulta tus eventos para el módulo 2 de Skills Academy")
+st.title("📋 Consulta tu inscripción a eventos Skills Academy")
 
 # ---- CONFIGURACIÓN DE GOOGLE SHEETS ----
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -45,9 +45,15 @@ if st.button("Consultar"):
     if resultado.empty:
         st.warning("❌ Correo no encontrado. Verifica que esté bien escrito.")
     else:
-        st.info("🎯 A continuación verás tus eventos, estados y fechas.")
-
         eventos = ["AUTENTICIDAD", "RELEVANCIA", "CONEXIÓN", "STORYTELLING", "C.DIFICILES", "C.PRESENTACIONES"]
+
+        # Detectar si tiene cupo asignado en todas las sesiones
+        tiene_todo = all("cupo asignado" in resultado.iloc[0][evento].lower() for evento in eventos)
+
+        if tiene_todo:
+            st.success("👑 ¡Tienes cupo en todas las sesiones! Acceso completo como líder del equipo.")
+
+        st.info("🎯 A continuación verás tus eventos, estados y fechas.")
 
         for evento in eventos:
             estado = resultado.iloc[0][evento]
