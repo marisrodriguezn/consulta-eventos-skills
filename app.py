@@ -46,26 +46,33 @@ if st.button("Consultar"):
         st.warning("❌ Correo no encontrado. Verifica que esté bien escrito.")
     else:
         eventos = ["AUTENTICIDAD", "RELEVANCIA", "CONEXIÓN", "STORYTELLING", "C.DIFICILES", "C.PRESENTACIONES"]
-
-        # Detectar si tiene cupo asignado en todas las sesiones
         tiene_todo = all("cupo asignado" in resultado.iloc[0][evento].lower() for evento in eventos)
 
         if tiene_todo:
-            st.success("👑 ¡Tienes cupo en todas las sesiones! Acceso completo como líder del equipo.")
+            st.success("⭐ ¡Tienes acceso completo a todas las sesiones! No necesitas preocuparte por confirmar nada más.")
+            st.markdown("### 🗓️ Agenda de sesiones")
+            for evento in eventos:
+                nombre_largo = nombres_eventos.get(evento, evento)
+                fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
+                st.markdown(f"""
+                    <div style="background-color:#FAFAFA; padding:8px 15px; border-left:5px solid #3AAFA9; margin-bottom:6px; font-size:14px; border-radius:5px">
+                        <strong>{nombre_largo}</strong><br>
+                        <span>📅 {fecha}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("🎯 A continuación verás tus eventos, estados y fechas.")
+            for evento in eventos:
+                estado = resultado.iloc[0][evento]
+                fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
+                color = "#E6F4EA" if "cupo asignado" in estado.lower() else "#F2F2F2"
+                emoji = "🎟️" if "cupo asignado" in estado.lower() else "🕐"
+                nombre_largo = nombres_eventos.get(evento, evento)
 
-        st.info("🎯 A continuación verás tus eventos, estados y fechas.")
-
-        for evento in eventos:
-            estado = resultado.iloc[0][evento]
-            fecha = fechas_df.loc[evento, "Fecha"] if evento in fechas_df.index else "No disponible"
-            color = "#E6F4EA" if "cupo asignado" in estado.lower() else "#F2F2F2"
-            emoji = "🎟️" if "cupo asignado" in estado.lower() else "🕐"
-            nombre_largo = nombres_eventos.get(evento, evento)
-
-            st.markdown(f"""
-                <div style="background-color:{color}; padding:10px 15px; border-radius:8px; margin-bottom:8px; font-size:15px">
-                    <div style="font-weight:bold; margin-bottom:4px;">{emoji} {nombre_largo}</div>
-                    <div><strong>Estado:</strong> {estado}</div>
-                    <div><strong>Fecha:</strong> {fecha}</div>
-                </div>
-            """, unsafe_allow_html=True)
+                st.markdown(f"""
+                    <div style="background-color:{color}; padding:10px 15px; border-radius:8px; margin-bottom:8px; font-size:15px">
+                        <div style="font-weight:bold; margin-bottom:4px;">{emoji} {nombre_largo}</div>
+                        <div><strong>Estado:</strong> {estado}</div>
+                        <div><strong>Fecha:</strong> {fecha}</div>
+                    </div>
+                """, unsafe_allow_html=True)
